@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriSmart - Smart Farming</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f3f8f1;
+  color: #26382b;
+}
+
+header {
+  background: #14532d;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 28px;
+}
+
+header p {
+  margin-top: 8px;
+  color: #d8f3dc;
+}
+
+nav {
+  background: #216b3b;
+  padding: 12px;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 8px;
+  font-size: 14px;
+}
+
+.hero {
+  padding: 35px 20px;
+  text-align: center;
+  background: #d9f2dc;
+}
+
+.hero h2 {
+  color: #14532d;
+  font-size: 25px;
+}
+
+.hero p {
+  margin: 12px auto;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+section {
+  background: white;
+  margin: 18px;
+  padding: 22px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #00000012;
+}
+
+h2 {
+  color: #176333;
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-top: 14px;
+  font-weight: bold;
+}
+
+select, input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 7px;
+  border: 1px solid #b7cbb9;
+  border-radius: 7px;
+  background: white;
+}
+
+button {
+  background: #16803c;
+  color: white;
+  border: none;
+  padding: 13px 18px;
+  border-radius: 7px;
+  margin-top: 18px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #105d2c;
+}
+
+.result {
+  background: #e5f5e8;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
+  line-height: 1.7;
+  display: none;
+}
+
+.card {
+  background: #f1f8f0;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.bar {
+  height: 13px;
+  background: #dce9dc;
+  border-radius: 10px;
+  margin: 8px 0;
+}
+
+.fill {
+  height: 13px;
+  background: #26964d;
+  border-radius: 10px;
+}
+
+.climate-box {
+  background: #eaf6ff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.map {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-top: 15px;
+}
+
+.zone {
+  padding: 28px 5px;
+  text-align: center;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.low { background: #24964c; }
+.medium { background: #e4a323; }
+.high { background: #d9534f; }
+
+.note {
+  font-size: 13px;
+  color: #666;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+footer {
+  background: #14532d;
+  color: white;
+  padding: 22px;
+  text-align: center;
+  margin-top: 25px;
+  line-height: 1.6;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌱 AgriSmart</h1>
+  <p>Smart Farming with NASA Earth Data</p>
+</header>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#planner">Planner</a>
+  <a href="#compare">Compare</a>
+  <a href="#climate">Climate</a>
+  <a href="#map">Field Map</a>
+</nav>
+
+<div class="hero" id="home">
+  <h2>Grow Smart. Farm Better.</h2>
+  <p>
+    AgriSmart helps farmers choose suitable crop
+    rotation plans using climate, soil and
+    environmental information.
+  </p>
+  <p>🌾 Better Crops | 💧 Smart Water Use | 🌍 Healthy Soil</p>
+</div>
+
+<section id="planner">
+  <h2>👨‍🌾 Farmer Information</h2>
+  <p>Enter your field details to get a sample crop rotation suggestion.</p>
+
+  <label>Water Availability</label>
+  <select id="water">
+    <option value="low">Low</option>
+    <option value="medium">Medium</option>
+    <option value="high">High</option>
+  </select>
+
+  <label>Soil Condition</label>
+  <select id="soil">
+    <option value="sandy">Sandy Soil</option>
+    <option value="clay">Clay Soil</option>
+    <option value="loamy">Loamy Soil</option>
+  </select>
+
+  <label>Farmer's Priority</label>
+  <select id="priority">
+    <option value="water">Save Water</option>
+    <option value="soil">Improve Soil Health</option>
+    <option value="yield">Better Crop Yield</option>
+  </select>
+
+  <button onclick="recommend()">Get Crop Recommendation</button>
+
+  <div class="result" id="result"></div>
+</section>
+
+<section id="compare">
+  <h2>📊 Crop Rotation Comparison</h2>
+  <p>Illustrative comparison scores for three sample crop rotations.</p>
+
+  <div class="card">
+    <h3>🌽 Maize → Groundnut → Millet</h3>
+    <p>Soil Health: 85/100</p>
+    <div class="bar"><div class="fill" style="width:85%"></div></div>
+    <p>Water Efficiency: 75/100</p>
+    <div class="bar"><div class="fill" style="width:75%"></div></div>
+  </div>
+
+  <div class="card">
+    <h3>🌾 Rice → Pulses → Wheat</h3>
+    <p>Soil Health: 80/100</p>
+    <div class="bar"><div class="fill" style="width:80%"></div></div>
+    <p>Water Efficiency: 55/100</p>
+    <div class="bar"><div class="fill" style="width:55%"></div></div>
+  </div>
+
+  <div class="card">
+    <h3>🌻 Millet → Cowpea → Groundnut</h3>
+    <p>Soil Health: 90/100</p>
+    <div class="bar"><div class="fill" style="width:90%"></div></div>
+    <p>Water Efficiency: 90/100</p>
+    <div class="bar"><div class="fill" style="width:90%"></div></div>
+  </div>
+
+  <p class="note">
+    Note: These are demonstration scores, not measured
+    NASA data or verified agricultural predictions.
+  </p>
+</section>
+
+<section id="climate">
+  <h2>🌦️ Climate Explorer</h2>
+  <p>Explore how rainfall and temperature may affect farming.</p>
+
+  <div class="climate-box">
+    <label>Rainfall (mm)</label>
+    <input type="range" id="rain" min="0" max="300" value="100"
+    oninput="climateUpdate()">
+    <p id="rainValue">Rainfall: 100 mm</p>
+
+    <label>Temperature (°C)</label>
+    <input type="range" id="temp" min="10" max="45" value="30"
+    oninput="climateUpdate()">
+    <p id="tempValue">Temperature: 30 °C</p>
+
+    <button onclick="climateUpdate()">Analyze Climate</button>
+    <div class="result" id="climateResult"></div>
+  </div>
+</section>
+
+<section id="map">
+  <h2>🗺️ Field Vulnerability Map</h2>
+  <p>Sample field zones showing different levels of vulnerability.</p>
+
+  <div class="map">
+    <div class="zone low">Low Risk</div>
+    <div class="zone medium">Medium Risk</div>
+    <div class="zone high">High Risk</div>
+    <div class="zone medium">Medium Risk</div>
+    <div class="zone low">Low Risk</div>
+    <div class="zone high">High Risk</div>
+    <div class="zone low">Low Risk</div>
+    <div class="zone medium">Medium Risk</div>
+    <div class="zone low">Low Risk</div>
+  </div>
+
+  <p class="note">
+    Green = Low vulnerability | Yellow = Medium vulnerability |
+    Red = High vulnerability.
+    This is an illustrative map, not a real satellite map.
+  </p>
+</section>
+
+<section>
+  <h2>🌿 Why Crop Rotation?</h2>
+
+  <div class="card">
+    <h3>🌱 Legume Crops</h3>
+    <p>Legumes help improve soil nitrogen and support soil health.</p>
+  </div>
+
+  <div class="card">
+    <h3>💧 Water-efficient Crops</h3>
+    <p>Millets can be useful in areas with limited water availability.</p>
+  </div>
+
+  <div class="card">
+    <h3>🌍 Cover Crops</h3>
+    <p>Cover crops help protect soil and reduce erosion.</p>
+  </div>
+
+  <div class="card">
+    <h3>🌾 Deep-rooted Crops</h3>
+    <p>Some deep-rooted crops can access water from deeper soil layers.</p>
+  </div>
+</section>
+
+<footer>
+  <h3>🌱 AgriSmart</h3>
+  <p>Smart Farming for a Sustainable Future</p>
+  <p>NASA Data Inspired Farming Project</p>
+</footer>
+
+<script>
+
+function recommend() {
+  let water = document.getElementById("water").value;
+  let soil = document.getElementById("soil").value;
+  let priority = document.getElementById("priority").value;
+
+  let crop = "";
+  let reason = "";
+
+  if (water === "low") {
+    crop = "Millet → Cowpea → Groundnut";
+    reason = "This sample plan focuses on crops that can be suitable for lower-water conditions.";
+  } else if (priority === "soil") {
+    crop = "Maize → Groundnut → Green Gram";
+    reason = "Including legumes can support soil nitrogen improvement.";
+  } else if (water === "high") {
+    crop = "Rice → Pulses → Maize";
+    reason = "This is a sample rotation for fields with better water availability.";
+  } else {
+    crop = "Maize → Groundnut → Millet";
+    reason = "This rotation combines different crop types.";
+  }
+
+  if (soil === "sandy") {
+    reason += " Sandy soil may need extra attention to water retention.";
+  } else if (soil === "clay") {
+    reason += " Check drainage and avoid waterlogging.";
+  } else {
+    reason += " Loamy soil can support a variety of crops.";
+  }
+
+  document.getElementById("result").style.display = "block";
+  document.getElementById("result").innerHTML =
+    "<h3>Recommended Sample Rotation 🌱</h3>" +
+    "<h2>" + crop + "</h2>" +
+    "<p>" + reason + "</p>" +
+    "<p><b>Note:</b> This is a basic demo suggestion. Consult local agricultural experts before planting.</p>";
+}
+
+function climateUpdate() {
+  let rain = document.getElementById("rain").value;
+  let temp = document.getElementById("temp").value;
+
+  document.getElementById("rainValue").innerText =
+    "Rainfall: " + rain + " mm";
+
+  document.getElementById("tempValue").innerText =
+    "Temperature: " + temp + " °C";
+
+  let message = "";
+
+  if (rain < 80) {
+    message = "Low rainfall: Consider water-saving practices and drought-tolerant crops.";
+  } else if (rain > 200) {
+    message = "High rainfall: Check drainage and protect fields from waterlogging.";
+  } else {
+    message = "Moderate rainfall: Monitor soil moisture and plan irrigation carefully.";
+  }
+
+  if (temp > 35) {
+    message += " High temperature: Heat stress may affect crops.";
+  } else {
+    message += " Monitor temperature during important crop growth stages.";
+  }
+
+  document.getElementById("climateResult").style.display = "block";
+  document.getElementById("climateResult").innerHTML =
+    "<b>Climate Insight:</b><br>" + message;
+}
+
+</script>
+
+</body>
+</html>
